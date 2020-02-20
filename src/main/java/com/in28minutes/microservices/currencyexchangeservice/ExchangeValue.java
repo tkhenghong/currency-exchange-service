@@ -7,6 +7,7 @@ public class ExchangeValue {
     private String from;
     private String to;
     private BigDecimal conversionMultiple; // conversion factor, currency A * converionMultiple = currency B
+    private int port;
 
     public ExchangeValue(Long id, String from, String to, BigDecimal conversionMultiple) {
         super(); // super() is written in Eclipse IDE, interesting!
@@ -34,5 +35,14 @@ public class ExchangeValue {
 
     public BigDecimal getConversionMultiple() {
         return conversionMultiple;
+    }
+
+    // Port needs both getters and setters
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }
