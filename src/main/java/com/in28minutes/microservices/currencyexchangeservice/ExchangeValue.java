@@ -1,11 +1,23 @@
 package com.in28minutes.microservices.currencyexchangeservice;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
+@Entity
 public class ExchangeValue {
+
+    @Id
     private Long id;
+
+    // from is a preserved keyword in SQL, so we need to call the following column with different name in the database
+    @Column(name = "currency_from")
     private String from;
+
+    @Column(name = "currency_to")
     private String to;
+
     private BigDecimal conversionMultiple; // conversion factor, currency A * converionMultiple = currency B
     private int port;
 
