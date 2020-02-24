@@ -13,18 +13,21 @@ public class CurrencyExchangeController {
 
     private Environment environment;
 
+    private ExchangeValueRepository exchangeValueRepository;
     @Autowired
-    CurrencyExchangeController(Environment environment) {
+    CurrencyExchangeController(Environment environment, ExchangeValueRepository exchangeValueRepository) {
         this.environment = environment;
+        this.exchangeValueRepository = exchangeValueRepository;
     }
 
     // Create simple controller method
     // http://localhost:8000/currency-exchange/from/USD/to/INR
+    // http://localhost:8000/currency-exchange/from/EUR/to/INR
+    // http://localhost:8000/currency-exchange/from/AUD/to/INR
     // Change the port no. to run other instances (See application.properties file)
     @GetMapping("/currency-exchange/from/{from}/to/{to}")
     public ExchangeValue retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
-        ExchangeValue exchangeValue = new ExchangeValue(1000L, from, to, BigDecimal.valueOf(65));
-//        exchangeValue.setPort(8000);
+        ExchangeValue exchangeValue = exchangeValueRepository.findByFromAndTo(from, to);
         exchangeValue.setPort(Integer.parseInt(environment.getProperty("local.server.port"))); // Get the port of the server itself
         return exchangeValue;
     }
