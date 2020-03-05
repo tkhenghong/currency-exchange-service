@@ -1,5 +1,7 @@
 package com.in28minutes.microservices.currencyexchangeservice;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,9 @@ public class CurrencyExchangeController {
     private Environment environment;
 
     private ExchangeValueRepository exchangeValueRepository;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     CurrencyExchangeController(Environment environment, ExchangeValueRepository exchangeValueRepository) {
         this.environment = environment;
@@ -29,6 +34,9 @@ public class CurrencyExchangeController {
     public ExchangeValue retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
         ExchangeValue exchangeValue = exchangeValueRepository.findByFromAndTo(from, to);
         exchangeValue.setPort(Integer.parseInt(environment.getProperty("local.server.port"))); // Get the port of the server itself
+
+        logger.info("{}", exchangeValue); // Add this to put empty value for Spring Cloud Sleuth to set an ID for any requests that comes in.
+
         return exchangeValue;
     }
 }
